@@ -1,2 +1,11 @@
 ### LS-VO: Learning Dense Optical Subspace for Robust Visual Odometry Estimation
 * Paper URL: https://ieeexplore.ieee.org/abstract/document/8283696
+Abstract: This work proposes a novel deep network architecture to solve the camera ego-motion estimation problem. A motion estimation network generally learns features similar to optical flow (OF) fields starting from sequences of images. This OF can be described by a lower dimensional latent space. Previous research has shown how to find linear approximations of this space. We propose to use an autoencoder network to find a nonlinear representation of the OF manifold. In addition, we propose to learn the latent space jointly with the estimation task, so that the learned OF features become a more robust description of the OF input. We call this novel architecture latent space visual odometry (LS-VO). The experiments show that LS-VO achieves a considerable increase in performances with respect to baselines, while the number of parameters of the estimation network only slightly increases.
+
+My Understanding and Thoughts:
+So, this is another way in applying deep learning for SLAM, whose goal also aims to improve the accuracy of Visual Odometry process. There are typically three ways in Visual Odometry: 
+* indirect method: require feature extraction, feature description and feature matching;
+* direct method: matching pixels directly, require pixel intensity and depth information;
+* semi-direct method: use an efficient probabilistic matching approach to improve the direct method, and depth estimation can largely improve its overall accuracy. This is what used in CNN-SVO.
+Here, LS-VO is an indirect method. It use a CNN network to match the current camera frame and previous camera frame to figure out camera movement. While in CNN-SVO, it uses a CNN network to solve depth of pixels (disparity map), and use this depth information to match camera frames. (This depth-prediction CNN could be replaced by a RGB-D camera). Possibly, LS-VO and CNN-SVO and be combined together (like LS-SVO), i.e., to take advantage of the depth information to improve the results of feature matching CNN in LS-VO. Also, just merely reproduce
+the paper results of CNN-SVO or LS-VO is possibly applicable.
