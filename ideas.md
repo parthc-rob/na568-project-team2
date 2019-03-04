@@ -8,6 +8,10 @@ Abstract— Reliable feature correspondence between frames is a critical step in
 
 https://github.com/yan99033/CNN-SVO
 
+> Improved depth estimation using neural network. Converge faster and robust to illumination variation.
+
+
+
 ## RGB-iD-SLAM
 
 #### RGBiD-SLAM for Accurate Real-time Localisation and 3D Mapping 
@@ -15,6 +19,10 @@ https://github.com/yan99033/CNN-SVO
 In this paper we present a complete SLAM system for RGB-D cameras, namely RGB-iD SLAM. The presented approach is a dense direct SLAM method with the main characteristic of working with the depth maps in inverse depth parametrisation for the routines of dense alignment or keyframe fusion. The system consists in 2 CPU threads working in parallel, which share the use of the GPU for dense alignment and keyframe fusion routines. The ﬁrst thread is a front-end operating at frame rate, which processes every incoming frame from the RGB-D sensor to compute the incremental odometry and integrate it in a keyframe which is changed periodically following a covisibility-based strategy. The second thread is a back-end which receives keyframes from the front-end. This thread is in charge of segmenting the keyframes based on their structure, describing them using Bags of Words, trying to ﬁnd potential loop closures with previous keyframes, and in such case perform pose-graph optimisation for trajectory correction. In addition, our system allows is able to compute the odometry both with unregistered and registered depth maps, allowing to use customised calibrations of the RGB-D sensor. As a consequence in the paper we also propose a detailed calibration pipeline to compute customised calibrations for particular RGB-D cameras. The experiments with our approach in the TUM RGB-D benchmark datasets show results superior in accuracy to the state-of-the-art in many of the sequences. The code has been made available on-line for research purposes.
 
 https://github.com/dangut/RGBiD-SLAM
+
+
+
+
 
 ## Unsupervised learning
 
@@ -26,7 +34,7 @@ The source code is available at https://github.com/Huangying-Zhan/Depth-VO-Feat
 
 
 
-# Semantic SLAM
+# Semantic SLAM(not )
 
 
 
