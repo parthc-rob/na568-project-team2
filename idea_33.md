@@ -7,5 +7,6 @@ So, this is another way in applying deep learning for SLAM, whose goal also aims
 * indirect method: require feature extraction, feature description and feature matching;
 * direct method: matching pixels directly, require pixel intensity and depth information;
 * semi-direct method: use an efficient probabilistic matching approach to improve the direct method, and depth estimation can largely improve its overall accuracy. This is what used in CNN-SVO.
+
 Here, LS-VO is an indirect method. It use a CNN network to match the current camera frame and previous camera frame to figure out camera movement. While in CNN-SVO, it uses a CNN network to solve depth of pixels (disparity map), and use this depth information to match camera frames. (This depth-prediction CNN could be replaced by a RGB-D camera). Possibly, LS-VO and CNN-SVO and be combined together (like LS-SVO), i.e., to take advantage of the depth information to improve the results of feature matching CNN in LS-VO. Also, just merely reproduce
 the paper results of CNN-SVO or LS-VO is possibly applicable.
