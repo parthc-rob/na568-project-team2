@@ -8,4 +8,4 @@ https://www.ri.cmu.edu/event/robust-active-slam-for-real-time-large-scale-indoor
 
 https://www.emeraldinsight.com/doi/full/10.1108/AEAT-12-2016-0239
 
-
+https://www.researchgate.net/publication/221323036_Active_SLAM_and_Loop_Prediction_with_the_Segmented_Map_Using_Simplified_Models
