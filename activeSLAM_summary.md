@@ -6,11 +6,11 @@ closing action).
 
 ### Structure
 A possible structure is to integrate an occupancy grid map based SLAM and a motion choosing mechanism.
-#### SLAM
+#### 1) SLAM
 We may use a Rao-Blackwellized particle filter SLAM for its robustness on nonlinear models. And there are two possible motion choosing 
 mechanism to choose between.
-#### Old-fashioned node-based method
-#### Selection among a finite set
+#### 2) Old-fashioned node-based method
+#### 3) Selection among a finite set
 * Select vantage points
 * Compute the utility of applying a certain motion, such as information gain
 * Carry out the selected motion and determine whether to terminate the task
