@@ -9,9 +9,9 @@ Tasks we can do:
 
 [//]: # (Image References)
 
-[image1]: ./test_images/cnn_loopClosure_fig1.jpg "HOG_match"
-[image2]: ./test_images/cnn_loopClosure_fig2.jpg "viewpoint_warp"
-[image3]: ./test_images/cnn_loopClosure_fig3.jpg "network_semantic"
+[image1]: test_images/cnn_loopClosure_fig1.jpg "HOG_match"
+[image2]: test_images/cnn_loopClosure_fig2.jpg "viewpoint_warp"
+[image3]: test_images/cnn_loopClosure_fig3.jpg "network_semantic"
 
 
 ### Paper Review
