@@ -30,8 +30,12 @@ For each single image, HOG is a very long 1D vector. The image shape is 120*160 
 * The HOG vector X2 is used as training "label" 
 * Stack (X1,X2) of all training images as the training set
 
-So the network aims to compute a HOG feature for each input image. In the test step, the network computes the HOG vector for the test image
-and uses NN search to judge whether this place has been seen before.
+So the network aims to compute a HOG feature for each input image. In the test step, the network computes the HOG vector for the test image and uses NN search to judge whether this place has been seen before.
 
 ### Network Architecture
 ![alt text][image3]
+
+The network is not very complex (depth within LeNet-5 and VGG-16, much simpler than Inception-V1).  
+
+### Reference
+1. Nate Merrill and Guoquan Huang, *Lightweight Unsupervised Deep Loop Closure*, https://arxiv.org/abs/1805.07703
