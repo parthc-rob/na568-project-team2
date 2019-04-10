@@ -86,17 +86,21 @@ def buildNet(batch_size, w=160, h=120, c=1):
     
 
 def train():
-    data_dir = 'E:/避免根目录/my_dataset/Places365'
+    # your folder path which containing all four folders "train", "trainlabels", "val", "vallabels"
+    data_dir = ...
+    # Set it to Ture if you want to continue to train a pretrained model
     start_from_checkpoint = False
+    # your path to store the trained network model file 
     checkpoint_path = 'E:/JuWorkDir/568_project/calc_model.h5'
    
     ########## model parameters ##########
+    # number of training images and validation images
     num_train, num_val = 25550, 10950
     input_height, input_width, channels = 120, 160, 1
     our_batch_size = 2
     our_epochs = 5
-    num_train_batches = 5
-    num_val_batches = 2
+    num_train_batches = num_train // our_batch_size
+    num_val_batches = num_val // our_batch_size
     
     ########## model parameters ##########
     if start_from_checkpoint == True:
