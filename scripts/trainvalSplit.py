@@ -16,13 +16,17 @@ import os
 
 def main():
     '''
-    Split the 36500 raw 256x256 images into the training set (25550 images) and 
-    the validation set (10950 images)
+    Split raw RGB images into the training set (70% of total RGB images) and 
+    the validation set (30% of total RGB images)
     '''
     
-    imgs_dir = 'E:/避免根目录/my_dataset/val_256'   # folder contains 36500 raw 256x256 images
-    out_dir = 'E:/避免根目录/my_dataset/Places365'
-    num_train, num_val = 25550, 10950
+    # your path for a source folder containing raw RGB images
+    imgs_dir = ...   
+    # our path to storage folders rawtrain and rawval
+    # the output path will be "out_dir + /rawtrain" and "out_dir + /rawval"
+    out_dir = ...
+    # number of images in folder "rawtrain" (0.7 * num_total) and "rawval" (0.3 * num_total)
+    num_train, num_val = ..., ...
     
     idx = np.arange(num_train+num_val)   
     np.random.shuffle(idx)
