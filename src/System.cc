@@ -83,6 +83,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
     //Initialize the Tracking thread
     //(it will live in the main thread of execution, the one that called this constructor)
+    //mpVocabulary: ORB dictionary, mpFrameDrawer: image window, mpMapDrawer: map window, mpMap: map
+
     mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                              mpMap, mpKeyFrameDatabase, strSettingsFile, mSensor);
 
@@ -154,7 +156,7 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
         mbReset = false;
     }
     }
-
+    // RGBD image processing
     cv::Mat Tcw = mpTracker->GrabImageStereo(imLeft,imRight,timestamp);
 
     unique_lock<mutex> lock2(mMutexState);
