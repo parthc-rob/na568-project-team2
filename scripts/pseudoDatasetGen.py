@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Apr  4 01:39:40 2019
+This file is used to convert a RGB images folder into a grayscale images folder (training set or validation set)
+and a folder containing HOG features of each image in.
 
 @author: Kun Sun
 """
@@ -112,8 +114,8 @@ def buildTrainSet(imgs_dir, out_dir, name):
     Create a folder "train" with all training images and a folder "labels"
     with all training labels (HOG vectors).
     Params:
-        imgs_dir - the path with all raw training images
-        out_dir - the path to create folders "train" and "labels"
+        imgs_dir - the path with all raw RGB images
+        out_dir - the path to create folders "train"(or "val") and "trainlabels"(or "vallabels")
     """
     
     raw_imgs = os.listdir(imgs_dir)
@@ -149,24 +151,16 @@ def buildTrainSet(imgs_dir, out_dir, name):
 
 
 if __name__ == "__main__":
-    '''
-    img1 = resizeImg(mpimg.imread('C:/Users/hp/Pictures/Saved Pictures/test1.jpg'))
-    img2 = randViewpointWarp(img1,img1.shape[1],img1.shape[0])
-    ImagePairShow(img1, img2)
-    map1 = calcHOG(img1)
-    map2 = calcHOG(img2)
-    visualizeHOG(map1, map2)
-    '''
+    # your path for folders "rawtrain" and "rawval"
+    train_imgs_dir = ".../rawtrain"
+    val_imgs_dir = ".../rawval"
+    # your path to storage the output folders "train" and "val"
+    train_out_dir = ".../train"
+    val_out_dir = ".../val"
     
-    #imgs_dir = "E:/避免根目录/my_dataset/CampusLoopDataset/live"
-    imgs_dir = "E:/避免根目录/my_dataset/Places365/rawtrain"
-    #out_dir = "E:/避免根目录/my_dataset/CampusLoopDataset"
-    out_dir = "E:/避免根目录/my_dataset/Places365"
-    
-    
-    #buildTrainSet(imgs_dir, out_dir, 'train')
-    
-    path = "E:/避免根目录/my_dataset/Places365/val"
-    ImageDisplay(path, rows=2, cols=2)
+    print("Construct training set...")
+    buildTrainSet(train_imgs_dir, train_out_dir, 'train')
+    print("Construct validation set...")
+    buildTrainSet(val_imgs_dir, val_out_dir, "val")
     
     
