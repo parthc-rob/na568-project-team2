@@ -56,12 +56,12 @@ def buildNet(batch_size, w=160, h=120, c=1):
     x = layers.ZeroPadding2D(padding=(4,4))(input_imgs)
     conv1 = layers.Conv2D(64,(5,5),activation='relu',strides=(2,2),padding ='valid')(x)
     pool1 = layers.MaxPooling2D(pool_size=(3,3),strides=(2,2),padding='valid')(conv1)
-    norm1 = LRN(batch_size,0.0001,0.75,1,5)(pool1)
+    norm1 = LRN(0.0001,0.75,1,5)(pool1)
     
     x = layers.ZeroPadding2D(padding=(2,2))(norm1)
     conv2 = layers.Conv2D(128,(4,4),activation='relu',strides=(1,1),padding ='valid')(x)
     pool2 = layers.MaxPooling2D(pool_size=(3,3),strides=(2,2),padding='valid')(conv2)
-    norm2 = LRN(batch_size,0.0001,0.75,1,5)(pool2)
+    norm2 = LRN(0.0001,0.75,1,5)(pool2)
     
     conv3 = layers.Conv2D(4,(3,3),activation='relu',strides=(1,1),padding ='valid')(norm2)
     
