@@ -19,8 +19,8 @@ import numpy as np
 
 class LRN(Layer):
 
-    def __init__(self, batch_size, alpha=0.0001, beta=0.75, k=1, n=5, **kwargs):
-        self.batch_size = batch_size
+    def __init__(self, alpha=0.0001, beta=0.75, k=1, n=5, **kwargs):
+        #self.batch_size = batch_size
         self.alpha = alpha
         self.beta = beta
         self.k = k
@@ -40,17 +40,11 @@ class LRN(Layer):
             4D tensor x 
         '''
         
-        num_ = np.int32(self.batch_size)
+        #num_ = np.int32(self.batch_size)
         height_, width_, channels_ = x.shape[1::]
         half_n = self.n // 2
         x_sqr = K.square(x)   # perform elementwise square for input x
         
-        
-        padded_sqr = K.concatenate(
-                [K.zeros((num_,height_,width_,half_n),dtype='float32'),
-                 x_sqr,
-                 K.zeros((num_,height_,width_,half_n),dtype='float32')],
-                axis=3)
         
         '''
         padding = np.zeros((num_,height_,width_,half_n),dtype=np.float32)
@@ -63,9 +57,18 @@ class LRN(Layer):
         '''
         
         # sum over adjacent channels
+        '''
         channel_maps = []
         for c in range(0,channels_):
             c_map = K.sum(padded_sqr[:,:,:,c:c+self.n], axis=3)
+            channel_maps.append(c_map)
+        scale = K.stack(channel_maps, axis=3)
+        '''
+        channel_maps = []
+        for c in range(0,channels_):
+            head = max(c-half_n, 0)
+            tail = min(c+half_n, channels_)
+            c_map = K.sum(x_sqr[:,:,:,head:c+tail+1], axis=3)
             channel_maps.append(c_map)
         scale = K.stack(channel_maps, axis=3)
             
@@ -79,3 +82,11 @@ class LRN(Layer):
 
     def compute_output_shape(self, input_shape):
         return input_shape
+    
+    def get_config(self):
+        config = {"alpha": self.alpha,
+          "k": self.k,
+          "beta": self.beta,
+          "n": self.n}
+        base_config = super(LRN, self).get_config()
+        return dict(list(base_config.items()) + list(config.items()))
