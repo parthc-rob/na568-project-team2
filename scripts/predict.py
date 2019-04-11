@@ -52,8 +52,10 @@ def predict_on_keyframe(keyframe, model_path):
     return hog
 
 if __name__ == '__main__':
-    img_path = 'E:/避免根目录/my_dataset/val_256/Places365_val_00000001.jpg'
-    model_path = 'E:/JuWorkDir/568_project/calc_model.h5'
+    # your path for an single RGB input image
+    img_path = '...'
+    # your path for .h5 model file 
+    model_path = '.../calc_model.h5'
     
     keyframe = mpimg.imread(img_path)
     hog = predict_on_keyframe(keyframe, model_path)
