@@ -110,7 +110,7 @@ bool LoopClosing::DetectLoop()
         mpCurrentKF->SetNotErase();
     }
 
-    //If the map contains less than 10 KF or less than 10 KF have passed from last loop detection
+    //If the map contains less than 10 KF or less than 10 KF have passed from last loop detection then we don't do the loop detection
     if(mpCurrentKF->mnId<mLastLoopKFid+10)
     {
         mpKeyFrameDB->add(mpCurrentKF);
@@ -121,7 +121,9 @@ bool LoopClosing::DetectLoop()
     // Compute reference BoW similarity score
     // This is the lowest score to a connected keyframe in the covisibility graph
     // We will impose loop candidates to have a higher similarity than this
+    // Covisible === Connected 
     const vector<KeyFrame*> vpConnectedKeyFrames = mpCurrentKF->GetVectorCovisibleKeyFrames();
+    //vpConnectedKeyFrames is a vector of pointers of connected KFs
     const DBoW2::BowVector &CurrentBowVec = mpCurrentKF->mBowVec;
     float minScore = 1;
     for(size_t i=0; i<vpConnectedKeyFrames.size(); i++)
@@ -134,10 +136,11 @@ bool LoopClosing::DetectLoop()
         float score = mpORBVocabulary->score(CurrentBowVec, BowVec);
 
         if(score<minScore)
-            minScore = score;
+            minScore = score;//minScore in all connected KFs
     }
 
     // Query the database imposing the minimum score
+    // These candidates are all KFs that have been in almost the same place
     vector<KeyFrame*> vpCandidateKFs = mpKeyFrameDB->DetectLoopCandidates(mpCurrentKF, minScore);
 
     // If there are no loop candidates, just add new keyframe and return false
@@ -191,6 +194,7 @@ bool LoopClosing::DetectLoop()
                     vCurrentConsistentGroups.push_back(cg);
                     vbConsistentGroup[iG]=true; //this avoid to include the same group more than once
                 }
+                // mnCovisibilityConsistencyTh = 3
                 if(nCurrentConsistency>=mnCovisibilityConsistencyTh && !bEnoughConsistent)
                 {
                     mvpEnoughConsistentCandidates.push_back(pCandidateKF);

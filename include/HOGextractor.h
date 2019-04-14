@@ -1,0 +1,11 @@
+
+
+
+
+class HOGextractor
+{
+public:
+    HOGextractor();
+    
+
+}

@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 
     cout << endl << "-------" << endl;
     cout << "Start processing sequence ..." << endl;
+    // This is the number of images (nImages)
     cout << "Images in the sequence: " << nImages << endl << endl;
 
     // Main loop
@@ -66,8 +67,8 @@ int main(int argc, char **argv)
     {
         // Read image from file
         im = cv::imread(string(argv[3])+"/"+vstrImageFilenames[ni],CV_LOAD_IMAGE_UNCHANGED);
+        // Time of each frame
         double tframe = vTimestamps[ni];
-
         if(im.empty())
         {
             cerr << endl << "Failed to load image at: "

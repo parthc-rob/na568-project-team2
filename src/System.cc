@@ -258,14 +258,14 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
         mbReset = false;
     }
     }
-
+    // Tcw is the camera pose matrix
     cv::Mat Tcw = mpTracker->GrabImageMonocular(im,timestamp);
 
     unique_lock<mutex> lock2(mMutexState);
     mTrackingState = mpTracker->mState;
     mTrackedMapPoints = mpTracker->mCurrentFrame.mvpMapPoints;
     mTrackedKeyPointsUn = mpTracker->mCurrentFrame.mvKeysUn;
-
+    // Return camera pose here
     return Tcw;
 }
 
@@ -426,14 +426,16 @@ void System::SaveTrajectoryKITTI(const string &filename)
         cerr << "ERROR: SaveTrajectoryKITTI cannot be used for monocular." << endl;
         return;
     }
-
+    // This is a vector of all keyframes 
     vector<KeyFrame*> vpKFs = mpMap->GetAllKeyFrames();
+    // Sort the keyframes because the first keyframe may not be at the starting point after loop closing
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
 
     // Transform all keyframes so that the first keyframe is at the origin.
     // After a loop closure the first keyframe might not be at the origin.
+    // Obtain the relative pose of first frame wrt world coordinate
     cv::Mat Two = vpKFs[0]->GetPoseInverse();
-
+    // Traverse all the frames here
     ofstream f;
     f.open(filename.c_str());
     f << fixed;
@@ -444,8 +446,8 @@ void System::SaveTrajectoryKITTI(const string &filename)
 
     // For each frame we have a reference keyframe (lRit), the timestamp (lT) and a flag
     // which is true when tracking failed (lbL).
-    list<ORB_SLAM2::KeyFrame*>::iterator lRit = mpTracker->mlpReferences.begin();
-    list<double>::iterator lT = mpTracker->mlFrameTimes.begin();
+    list<ORB_SLAM2::KeyFrame*>::iterator lRit = mpTracker->mlpReferences.begin(); // RKF iterator
+    list<double>::iterator lT = mpTracker->mlFrameTimes.begin();// Time iterator
     for(list<cv::Mat>::iterator lit=mpTracker->mlRelativeFramePoses.begin(), lend=mpTracker->mlRelativeFramePoses.end();lit!=lend;lit++, lRit++, lT++)
     {
         ORB_SLAM2::KeyFrame* pKF = *lRit;

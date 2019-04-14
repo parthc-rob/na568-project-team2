@@ -236,9 +236,8 @@ cv::Mat Tracking::GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const d
 
 
 cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
-{
+{   
     mImGray = im;
-
     if(mImGray.channels()==3)
     {
         if(mbRGB)
@@ -253,14 +252,14 @@ cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
         else
             cvtColor(mImGray,mImGray,CV_BGRA2GRAY);
     }
-
+    // initialize one frame and go to tracking 
     if(mState==NOT_INITIALIZED || mState==NO_IMAGES_YET)
         mCurrentFrame = Frame(mImGray,timestamp,mpIniORBextractor,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
     else
         mCurrentFrame = Frame(mImGray,timestamp,mpORBextractorLeft,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
 
     Track();
-
+    // mTcw is the camera pose matrix 
     return mCurrentFrame.mTcw.clone();
 }
 
@@ -426,9 +425,11 @@ void Tracking::Track()
                 cv::Mat LastTwc = cv::Mat::eye(4,4,CV_32F);
                 mLastFrame.GetRotationInverse().copyTo(LastTwc.rowRange(0,3).colRange(0,3));
                 mLastFrame.GetCameraCenter().copyTo(LastTwc.rowRange(0,3).col(3));
+                // here the velocity mat stores the product of current frame pose and last frame pose(?) 
                 mVelocity = mCurrentFrame.mTcw*LastTwc;
             }
             else
+                // set the speed mat to empty
                 mVelocity = cv::Mat();
 
             mpMapDrawer->SetCurrentCameraPose(mCurrentFrame.mTcw);
@@ -761,6 +762,7 @@ bool Tracking::TrackReferenceKeyFrame()
 
     // We perform first an ORB matching with the reference keyframe
     // If enough matches are found we setup a PnP solver
+    // See how many match points between current frame and reference keyframe
     ORBmatcher matcher(0.7,true);
     vector<MapPoint*> vpMapPointMatches;
 
@@ -770,8 +772,9 @@ bool Tracking::TrackReferenceKeyFrame()
         return false;
 
     mCurrentFrame.mvpMapPoints = vpMapPointMatches;
+    // Assign the pose from last frame to current frame
     mCurrentFrame.SetPose(mLastFrame.mTcw);
-
+    // Optimize current frame pose
     Optimizer::PoseOptimization(&mCurrentFrame);
 
     // Discard outliers
@@ -864,14 +867,16 @@ void Tracking::UpdateLastFrame()
     }
 }
 
+// This function is the motion model
 bool Tracking::TrackWithMotionModel()
 {
     ORBmatcher matcher(0.9,true);
 
     // Update last frame pose according to its reference keyframe
     // Create "visual odometry" points if in Localization Mode
+    // For monocular case it only update camera pose
     UpdateLastFrame();
-
+    // In this model it assumes the velocity of camera is constant value, posoe mat of next frame is the same as current frame but the position of camera is different.
     mCurrentFrame.SetPose(mVelocity*mLastFrame.mTcw);
 
     fill(mCurrentFrame.mvpMapPoints.begin(),mCurrentFrame.mvpMapPoints.end(),static_cast<MapPoint*>(NULL));
@@ -890,13 +895,13 @@ bool Tracking::TrackWithMotionModel()
         fill(mCurrentFrame.mvpMapPoints.begin(),mCurrentFrame.mvpMapPoints.end(),static_cast<MapPoint*>(NULL));
         nmatches = matcher.SearchByProjection(mCurrentFrame,mLastFrame,2*th,mSensor==System::MONOCULAR);
     }
-
+    // If there are still few matches, then motion model tracking fails
     if(nmatches<20)
         return false;
 
     // Optimize frame pose with all matches
     Optimizer::PoseOptimization(&mCurrentFrame);
-
+    // Return the tracking result and current frame map points
     // Discard outliers
     int nmatchesMap = 0;
     for(int i =0; i<mCurrentFrame.N; i++)
@@ -926,15 +931,18 @@ bool Tracking::TrackWithMotionModel()
 
     return nmatchesMap>=10;
 }
-
+// Local Map tracking
 bool Tracking::TrackLocalMap()
 {
     // We have an estimation of the camera pose and some map points tracked in the frame.
     // We retrieve the local map and try to find matches to points in the local map.
+    // The aim here it to update mvpLocalKeyFrame and mvpLocalMapPoints. These two variables store the keyframe and map points in the local map
 
     UpdateLocalMap();
 
+    // This function search mvpLocalMapPoints to see if these points meet the requirement of tracking and match current frame and local map points
     SearchLocalPoints();
+        
 
     // Optimize Pose
     Optimizer::PoseOptimization(&mCurrentFrame);
@@ -1366,7 +1374,8 @@ bool Tracking::Relocalization()
     vbDiscarded.resize(nKFs);
 
     int nCandidates=0;
-
+    // Solve PnP for each keyframe
+    // First perform BoW matching. when the matching > 15 then solve it and keep it as an candidate keyframe
     for(int i=0; i<nKFs; i++)
     {
         KeyFrame* pKF = vpCandidateKFs[i];
