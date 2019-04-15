@@ -200,6 +200,7 @@ bool LoopClosing::DetectLoop()
                     mvpEnoughConsistentCandidates.push_back(pCandidateKF);
                     bEnoughConsistent=true; //this avoid to insert the same candidate more than once
                 }
+                
             }
         }
 

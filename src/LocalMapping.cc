@@ -63,9 +63,11 @@ void LocalMapping::Run()
             // Check recent MapPoints
             MapPointCulling();
 
-            // Triangulate new MapPoints
+            // Triangulate new MapPoints between adjacent KFs
+            // Monocular mode rely extensively on this step
             CreateNewMapPoints();
-
+            
+            // If we have finished all kFs in the queue
             if(!CheckNewKeyFrames())
             {
                 // Find more matches in neighbor keyframes and fuse point duplications
@@ -76,14 +78,16 @@ void LocalMapping::Run()
 
             if(!CheckNewKeyFrames() && !stopRequested())
             {
-                // Local BA
+                // Local BA optimization
                 if(mpMap->KeyFramesInMap()>2)
                     Optimizer::LocalBundleAdjustment(mpCurrentKeyFrame,&mbAbortBA, mpMap);
 
                 // Check redundant local Keyframes
+                // Culling condition: At least 90% of mappoints in one KF can be at least three covisible KFs observed
                 KeyFrameCulling();
             }
-
+            
+            // Insert this KF to LC thread queue 
             mpLoopCloser->InsertKeyFrame(mpCurrentKeyFrame);
         }
         else if(Stop())
@@ -134,9 +138,10 @@ void LocalMapping::ProcessNewKeyFrame()
     }
 
     // Compute Bags of Words structures
+    // Compute BOW vector from current feature points
     mpCurrentKeyFrame->ComputeBoW();
 
-    // Associate MapPoints to the new keyframe and update normal and descriptor
+    // Associate MapPoints to the new keyframe and update normal and descriptor (stereo camera?)
     const vector<MapPoint*> vpMapPointMatches = mpCurrentKeyFrame->GetMapPointMatches();
 
     for(size_t i=0; i<vpMapPointMatches.size(); i++)
@@ -164,6 +169,7 @@ void LocalMapping::ProcessNewKeyFrame()
     mpCurrentKeyFrame->UpdateConnections();
 
     // Insert Keyframe in Map
+    // Previous we create new KF and add it to KFdb but we didn't insert it to the map until this step.
     mpMap->AddKeyFrame(mpCurrentKeyFrame);
 }
 

@@ -302,24 +302,27 @@ void Tracking::Track()
             {
                 // Local Mapping might have changed some MapPoints tracked in last frame
                 CheckReplacedInLastFrame();
-
+                // Velocity mat is empty or relocalized just now
                 if(mVelocity.empty() || mCurrentFrame.mnId<mnLastRelocFrameId+2)
                 {
                     bOK = TrackReferenceKeyFrame();
                 }
                 else
                 {
+                    // Constant velocity model
                     bOK = TrackWithMotionModel();
                     if(!bOK)
+                        // Reference KF model
                         bOK = TrackReferenceKeyFrame();
                 }
             }
             else
             {
+                // Relocalization model PnP solver
                 bOK = Relocalization();
             }
         }
-        else
+        else //Only Tracking mode
         {
             // Localization Mode: Local Mapping is deactivated
 
@@ -420,6 +423,7 @@ void Tracking::Track()
         if(bOK)
         {
             // Update motion model
+            // Tcw is the camera pose in wolrd frame
             if(!mLastFrame.mTcw.empty())
             {
                 cv::Mat LastTwc = cv::Mat::eye(4,4,CV_32F);
@@ -1068,6 +1072,8 @@ bool Tracking::NeedNewKeyFrame()
         return false;
 }
 
+////////////////   TO DO   ////////////////////////
+// Create a New KeyFrame here. Need to add descriptor here or in the Frame ? Look into Frame and KF class to see 
 void Tracking::CreateNewKeyFrame()
 {
     if(!mpLocalMapper->SetNotStop(true))
