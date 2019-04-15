@@ -118,30 +118,34 @@ bool LoopClosing::DetectLoop()
         return false;
     }
 
-    // Compute reference BoW similarity score
+    // Compute reference HOG similarity score
     // This is the lowest score to a connected keyframe in the covisibility graph
     // We will impose loop candidates to have a higher similarity than this
     // Covisible === Connected 
     const vector<KeyFrame*> vpConnectedKeyFrames = mpCurrentKF->GetVectorCovisibleKeyFrames();
-    //vpConnectedKeyFrames is a vector of pointers of connected KFs
-    const DBoW2::BowVector &CurrentBowVec = mpCurrentKF->mBowVec;
-    float minScore = 1;
+    // vpConnectedKeyFrames is a vector of pointers of connected KFs
+    // const DBoW2::BowVector &CurrentBowVec = mpCurrentKF->mBowVec;
+    const cv::Mat &CurrentHOGVec = mpCurrentKF->mHOGVec;
+    // TODO: Not sure if this score is big enough for initialization
+    float maxScore = 0;
+    // For each connected KF we comput the HOG distance score and find the maxminu score?
     for(size_t i=0; i<vpConnectedKeyFrames.size(); i++)
     {
         KeyFrame* pKF = vpConnectedKeyFrames[i];
         if(pKF->isBad())
             continue;
-        const DBoW2::BowVector &BowVec = pKF->mBowVec;
+        // const DBoW2::BowVector &BowVec = pKF->mBowVec;
+        const cv::Mat &HOGVec = pKF->mHOGVec;
+        //TODO: Add score evaluation metric for HOG vec 
+        float score = mpORBVocabulary->score(CurrentHOGVec, HOGVec);
 
-        float score = mpORBVocabulary->score(CurrentBowVec, BowVec);
-
-        if(score<minScore)
-            minScore = score;//minScore in all connected KFs
+        if(score>maxScore)
+            maxScore = score;//maxScore in all connected KFs the more similar the smaller the score? I think so...
     }
 
-    // Query the database imposing the minimum score
+    // Query the database imposing the maximum score
     // These candidates are all KFs that have been in almost the same place
-    vector<KeyFrame*> vpCandidateKFs = mpKeyFrameDB->DetectLoopCandidates(mpCurrentKF, minScore);
+    vector<KeyFrame*> vpCandidateKFs = mpKeyFrameDB->DetectLoopCandidates(mpCurrentKF, maxScore);
 
     // If there are no loop candidates, just add new keyframe and return false
     if(vpCandidateKFs.empty())

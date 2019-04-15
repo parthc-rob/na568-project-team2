@@ -63,6 +63,9 @@ public:
     // Compute Bag of Words representation.
     void ComputeBoW();
 
+    // Compute DHOG Descriptor using Convulutional Neural Network Forward Prediction
+    void ComputeHOG(const cv::Mat &imGray);
+
     // Set the camera pose.
     void SetPose(cv::Mat Tcw);
 
@@ -146,6 +149,9 @@ public:
     DBoW2::BowVector mBowVec;
     DBoW2::FeatureVector mFeatVec;
 
+    // HOG descriptor Vector structures.
+    cv::Mat mHOGVec;
+    
     // ORB descriptor, each row associated to a keypoint.
     cv::Mat mDescriptors, mDescriptorsRight;
 

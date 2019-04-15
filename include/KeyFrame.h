@@ -169,6 +169,8 @@ public:
     //BoW
     DBoW2::BowVector mBowVec;
     DBoW2::FeatureVector mFeatVec;
+    //HOG Vector
+    cv::Mat mHOGVec;
 
     // Pose relative to parent (this is computed when bad flag is activated)
     cv::Mat mTcp;

@@ -234,7 +234,7 @@ cv::Mat Tracking::GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const d
     return mCurrentFrame.mTcw.clone();
 }
 
-
+// New frame is built in this function
 cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
 {   
     mImGray = im;
