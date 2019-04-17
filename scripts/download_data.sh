@@ -16,7 +16,5 @@ wget -O data/ImageCollectionCoordinates.txt "${BASE_URL}/ImageCollectionCoordina
 
 wget -O data/NewCollegeGroundTruth.mat "${BASE_URL}/NewCollegeGroundTruth.mat"
 
-cd ..
-
 mkdir out
 
