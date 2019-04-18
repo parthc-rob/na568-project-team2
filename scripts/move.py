@@ -28,13 +28,13 @@ def move(data_dir, out_dir):
         for n in range(0, len(classes)):
             print('Parsing all images under scene class: ', classes[n])
             names = os.listdir(data_dir + '/' + alphabet[N] + '/' + classes[n])
-            if names[0].endwith('.jpg'):
+            if names[0].endswith('.jpg'):
                 # path in format like: a/airport/123.jpg
                 copy_images(data_dir+'/'+alphabet[N]+'/'+classes[n], out_dir)
             else:
                 # path in format like: l/lake/natural/123.jpg
                 for i in range(0, len(names)):
-                    folder_path = data_dir+'/'+alphabet[N]+'/'+classes[n]+names[i]
+                    folder_path = data_dir+'/'+alphabet[N]+'/'+classes[n]+'/'+names[i]
                     copy_images(folder_path, out_dir)
 
         print('Finishing copying all classes staring with letter: ', alphabet[N])
@@ -56,7 +56,7 @@ def copy_images(folder_path, out_dir):
 
 
 if __name__ == "__main__":
-    data_dir = /home/ubuntu/data_256
-    out_dir = /home/ubuntu/raw256_108G
+    data_dir = '/home/ubuntu/data_256'
+    out_dir = '/home/ubuntu/raw256_108G'
     tail = 1
     move(data_dir, out_dir)
