@@ -57,7 +57,7 @@ include_directories(
 
 
 add_executable(new_college
-    src/new_college.cpp)
+    src/new_college_HOG.cpp)
 target_link_libraries(new_college
     ${OpenCV_LIBS}
     ${EIGEN3_LIBS}

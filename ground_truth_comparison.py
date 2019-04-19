@@ -42,7 +42,7 @@ if __name__ == "__main__":
         ax=ax2,
         vmax=0.2,
         **default_heatmap_kwargs)
-    ax2.set_title('SURF + BoW')
+    ax2.set_title('HOG')
 
     # plt.show()
     plt.tight_layout()
