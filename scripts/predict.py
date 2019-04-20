@@ -12,7 +12,7 @@ import cv2
 import matplotlib.image as mpimg
 from keras import models
 from AcrossChannelNorm import LRN
-
+import argparse
 
 def resizeImg(img, rw=160, rh=120):
     img = cv2.resize(img, (rw, rh), interpolation = cv2.INTER_CUBIC)   # resize the image
@@ -52,10 +52,14 @@ def predict_on_keyframe(keyframe, model_path):
     return hog
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model_path", help="model path spec" )
+    parser.add_argument("--image_path", help="image path spec" )
+    args = parser.parse_args()
     # your path for an single RGB input image
-    img_path = '...'
+    img_path = args.image_path# '...'
     # your path for .h5 model file 
-    model_path = '.../calc_model.h5'
+    model_path = args.model_path # '.../calc_model.h5'
     
     keyframe = mpimg.imread(img_path)
     hog = predict_on_keyframe(keyframe, model_path)
