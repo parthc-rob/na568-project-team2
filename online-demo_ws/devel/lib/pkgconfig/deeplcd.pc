@@ -1,0 +1,8 @@
+prefix=/media/psf/Home/ning_documents/course/rob530/calc/DeepLCD/online-demo_ws/devel
+
+Name: deeplcd
+Description: Description of deeplcd
+Version: 0.0.0
+Cflags: 
+Libs: -L/media/psf/Home/ning_documents/course/rob530/calc/DeepLCD/online-demo_ws/devel/lib 
+Requires: 

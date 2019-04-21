@@ -1,0 +1,7 @@
+online-demo_ws/build/*
+online_demo_ws/devel/*
+CMakeFiles/*
+calc.tar.gz
+src/googletest/*
+src/googletest-build/*
+src/googletest-stamp/*
