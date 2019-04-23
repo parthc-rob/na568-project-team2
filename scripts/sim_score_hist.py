@@ -58,12 +58,14 @@ def predict_on_keyframe(keyframe, model, preprocess):
 
 
 def predict_on_CampusLoopDataset():
-    imgs1_path = 'E:/UnderRoot/my_dataset/CampusLoopDataset/live'
-    out1_path = 'E:/UnderRoot/my_dataset/CampusLoopDataset/livehogs'
-    imgs2_path = 'E:/UnderRoot/my_dataset/CampusLoopDataset/memory'
-    out2_path = 'E:/UnderRoot/my_dataset/CampusLoopDataset/memoryhogs'
-    model_path = 'E:/JuWorkDir/568_project/calc_model_6Million.h5'
+    # path variables
+    imgs1_path = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/live'
+    out1_path = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/livehogs'
+    imgs2_path = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/memory'
+    out2_path = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/memoryhogs'
+    model_path = 'YOUR_PATH_TO_MODEL_FILES/calc_model_6Million.h5'
     preprocess = True
+    
     # load the pretrained network model
     print('Loading the trained model from: ', model_path)
     my_model = models.load_model(model_path,custom_objects={'LRN': LRN})
@@ -138,8 +140,11 @@ if __name__ == '__main__':
     
     predict_on_CampusLoopDataset()
     
-    set1 = load_DescrSet('E:/UnderRoot/my_dataset/CampusLoopDataset/livehogs')
-    set2 = load_DescrSet('E:/UnderRoot/my_dataset/CampusLoopDataset/memoryhogs')
+    livedescr_path = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/livehogs'
+    memorydescr_path = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/memoryhogs'
+    
+    set1 = load_DescrSet(livedescr_path)
+    set2 = load_DescrSet(memorydescr_path)
     
     img_idx = 42
     scores = compute_sim_score(set1[img_idx-1,:],set2)
