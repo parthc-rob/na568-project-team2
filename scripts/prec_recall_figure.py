@@ -2,8 +2,6 @@
 """
 Created on Sat Apr 20 21:33:50 2019
 
-@author: Kun Sun
-
 To test our model on KITTI sequences
 """
 
@@ -51,7 +49,7 @@ def predict_on_keyframe(keyframe, model):
 
 def predict_on_KITTI():
     '''
-    Generate a HOG vector for each image in the NewCollege dataset
+    Generate a descriptor for each image in the selected KIITI dataset sequence
     using pretrained model
     '''
     
@@ -82,7 +80,7 @@ def predict_on_KITTI():
 
 def class2_score(x1, x2):
     '''
-    Given two HOG vectors, calculate the inner product between them.
+    Given two descriptors, calculate the inner product between them.
     Params:
         x1, x2: the normalized descriptors, with shape 1*936, 1 is num_imgs
     Output:
@@ -133,11 +131,11 @@ def solve_confusion_matrix():
 
 def thresh_matrix(mat, low):
     '''
-    Set all entries in the input matrix smaller than 'low' to 0,
+    Set all entries in the input matrix smaller than 'low' to 'low',
     which create larger spacing among entry values after normalization.
     Params:
         mat - the input matrix to apply thresholding
-        low - entry smaller than 'low' will be set to zero
+        low - entry smaller than 'low' will be set to 'low'
     '''
     ans = np.copy(mat)
     rows, cols = mat.shape
@@ -150,6 +148,10 @@ def thresh_matrix(mat, low):
 
 
 def normalize_matrix(mat):
+    '''
+    Normalize the matrix, which will let the minimum entry be 0 and maximum
+    entry be 1.
+    '''
     normalized_mat = np.copy(mat)
     normalized_mat = cv2.normalize(mat, None, 0.0, 1.0, cv2.NORM_MINMAX)
     return normalized_mat
@@ -157,12 +159,10 @@ def normalize_matrix(mat):
 
 def visualize_matrix(mat1, mat2):
     '''
-    Plot the ground truth confusion matrix and computed confusion matrix.
-    Remember to normalize the confusion matrix before visualization, also
-    takes only the lower triangular part.
+    Plot the ground truth confusion matrix and our confusion matrix.
     Params:
         mat1: ground truth
-        mat2: confusion matrix
+        mat2: our confusion matrix
     '''
     
     global color_map
@@ -220,15 +220,6 @@ def plot_precision_recall():
     fig.set_figwidth(10)
     plt.plot(prec_recall_curve[:, 2], prec_recall_curve[:, 1])
     
-    '''
-    for thresh, prec, rec in prec_recall_curve[5::5]:
-        plt.annotate(
-            str(round(thresh * 1000) / 1000.0),
-            xy=(prec, rec),
-            xytext=(8, 8),
-            textcoords='offset points')
-    '''
-    
     plt.ylabel('Precision', fontsize=20)
     plt.xlabel('Recall', fontsize=20)
     plt.title('Kitti Sequence 06 Results',fontsize=28)
@@ -240,38 +231,42 @@ def plot_precision_recall():
 if __name__ == '__main__':
     
     ########## Parameters ##########
-    data_path = 'E:/UnderRoot/my_dataset/KITTI_gray/sequences'
+    # please download KITTI gray scale images from http://www.cvlibs.net/datasets/kitti/eval_odometry.php
+    data_path = 'PATH_TO_DATASET_FOLDER/dataset/sequences'
     seq = '06'
+    
     thresh = 0.9999
     imgs_path = data_path + '/'+ seq + '/image_0'
     preds_path = data_path + '/'+ seq + '/predictions'
-    model_path = 'E:/JuWorkDir/568_project/calc_model_6Million.h5'
     
-    # results and evaluation
-    confus_mat_path = data_path + '/' + seq + '/Confus_mat.npy'
+    #  please download our model in models and place AcrossChannelNorm.py in the same directory with this python file
+    model_path = 'PATH_TO_KERAS_MODEL_FILES/calc_model_6Million.h5'
+    
+    # results and evaluation (store the results so no need to calculate multiple times)
     prec_recall_path = data_path + '/' + seq + '/prec_recall.png'
     compare_path = data_path + '/' + seq + '/comparation.png'
-    groundtruth_path = 'E:/UnderRoot/my_dataset/KITTI_gray/loop_closure_groundtruth/'+ seq+ '/matrix' + seq+ '.png'
+    
+    # please download KITTI ground truth from "http://www.robesafe.com/personal/roberto.arroyo/downloads.html" in
+    # section KITTI Odometry: LoopClosure Ground-truth
+    groundtruth_path = 'PATH_TO_GROUNDTRUTH_FOLDER/'+ seq+ '/matrix' + seq+ '.png'
       
     
-    
-    # number of keyframes in the sequence, figured out in solve_confusion_matrix()
+    # number of keyframes in the sequence, this global variable will be modified in solve_confusion_matrix(), no need to change here
     N = 0   
     
     color_map = 'Purples'
+    
     ########## Perform Test Here ##########
     
     
     # generate descriptor by pretrained CNN
+    predict_on_KITTI()
     
-    #predict_on_KITTI()
-    
-    # solve confusion matrix and groundtruth 
+    # solve confusion matrix and evaluate
     solve_confusion_matrix()
-    confus_mat = np.load(confus_mat_path)
     
     groundtruth = mpimg.imread(groundtruth_path)
     
     visualize_matrix(groundtruth, normalize_matrix(confus_mat))
     
-    #plot_precision_recall()
+    plot_precision_recall()
