@@ -12,3 +12,4 @@ download model file calc_model_6Million.h5 in master branch folder *model*s. Fro
 store the descriptors computed by our network
 * modify *model_path* to *your_path_store_h5modelfile/calc_model_6Million.h5* 
 * modify *groundtruth_path* to *your_path_store_groundtruth_foler/06/matrix06.png*
+* sequence other than 06 could also be tested, you need to modify path variables according to the sequence you want to test.
