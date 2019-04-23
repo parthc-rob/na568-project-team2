@@ -6,7 +6,8 @@
 ### run prec_recall_figure.py
 Please download KITTI grayscale images from http://www.cvlibs.net/datasets/kitti/eval_odometry.php and KITTI loop closure groud truth 
 from http://www.robesafe.com/personal/roberto.arroyo/downloads.html (in section KITTI Odometry: Loop Closure Ground-Truth). Please 
-download model file calc_model_6Million.h5 in master branch folder *model*s. From code lines 235~272 in prec_recall_figure.py modify the path variables:
+download model file calc_model_6Million.h5 in master branch folder *model*s. And AcrossChannelNorm.py in master branch folder *scripts*. From code lines 235~272 in prec_recall_figure.py modify the path variables:
+* put AcrossChannelNorm.py in the same folder of prec_recall_figure.py, this is a customized layer used by the network
 * modify *data_path* to *your_path_store_KITTI_grayimage_folder/dataset/sequences*
 * create an empty folder named *predictions* under *your_path_storing_KITTI_grayimage_folder/dataset/sequences/06*, this is the folder to 
 store the descriptors computed by our network
