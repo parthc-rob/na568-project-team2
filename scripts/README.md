@@ -1,7 +1,7 @@
 ## This folder contains code for the project:
 * prec_recall_figure.py run our trained model on the KITTI gray sequence and generate the confusion matrix and precision recall curve
 * sim_score_hist.py run our trained model on the CampusLoopDataset and plot the similarity score histogram
-* other files are used for training the network
+* train.py, move.py and psedoDatasetGen.py are used in model training.
 
 ### run prec_recall_figure.py
 Please download KITTI grayscale images from http://www.cvlibs.net/datasets/kitti/eval_odometry.php and KITTI loop closure groud truth 
