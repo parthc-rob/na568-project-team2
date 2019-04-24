@@ -24,8 +24,11 @@ From code line 143~146 in sim_score_hist.py modify the path variables:
 * set variable **memorydiscr_path** to **YOUR_PATH_for_DATASET/CampusLoopDataset/memoryhogs** 
 
 ### Files we use to train our model
-Plase download the Place365 dataset http://places2.csail.mit.edu/download.html. We choose the section **Data of Places365-Challenge 2016 small images 256x256, the 108GB training images and 501MB validation images**. After download, unzip the validation images, you will get a folder called **val_256** which contains 36500 raw validation jpg images. Unzip the training images, you will get a folder called **data_256**. This folder is much complex, with many different-level subfolders, and a total of 8 million images. So **move.py** is used to move all images in different subfolders into the same folder. In move.py 
+Plase download the Place365 dataset http://places2.csail.mit.edu/download.html. We choose the section **Data of Places365-Challenge 2016 small images 256x256, the 108GB training images and 501MB validation images**. After download, unzip the validation images, you will get a folder called **val_256** which contains 36500 raw validation jpg images. Unzip the training images, you will get a folder called **data_256**. This folder is much complex, with many different-level subfolders, and a total of 8 million images. So **move.py** is used to move all images in different subfolders into the same folder. From code lines 58~62 in move.py modify the variables:
+* set variable **data_dir** to **YOUR_PATH_FOR_FOLDER_data_256/data_256** 
+* set variable **out_dir** as any empty folder you want, and all images in different subfolder of data_256 will be copyed to that folder
 
-**We use unsupervised learning here, we don't have a ground truth.** Then use **pseudoDatasetgen.py** to generate a psedo label for each training image and validation image, and also generate train images and validation images from raw images. You also need to modify path 
-variables here.
-Finally, use train.py to train the model. You will need to modify the path you save model and paths for train folder, trainlabels folder, val folder and vallabels folder.
+**We don't use the groundtruth/labels provided by Place365 since we use unsupervised learning here**. **pseudoDatasetgen.py** is to generate the labels for our training images and validation images, and also generate train images and validation images from raw images. The file will also generate a preprocessed image for our raw RGB images in data_256 and val_256, i.e., converting to gray scale, random
+prospective transform, resizing etc. The input of pseudoDatasetGen.py is val_256 and the folder you put all raw training images in. The output of pseudoDatasetGen.py is four folders: train, trainlabels, val and vallabels. 
+**You will use this four folders in train.py to train the model.** Set the path variables in train.py for these four folders and the path to save the .h5 model file.
+
