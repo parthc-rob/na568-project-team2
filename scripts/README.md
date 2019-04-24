@@ -11,7 +11,7 @@ download model file calc_model_6Million.h5 in master branch folder *models*. And
 * set variable **data_path** as **YOUR_PATH_for_KITTI_FOLDER/dataset/sequences**
 * create an empty folder named **predictions** under the directory **YOUR_PATH_for_KITTI__FOLDER/dataset/sequences/06**, this is the folder to store the descriptors computed by our network
 * set variable **model_path** to **YOUR_PATH_for_h5modelfile/calc_model_6Million.h5** 
-* set variable **groundtruth_path** to **YOUR_PATH_for_GROUNDTRUTH_FOLDER/06/matrix06.png*
+* set variable **groundtruth_path** to **YOUR_PATH_for_GROUNDTRUTH_FOLDER/06/matrix06.png**
 * sequence besides 06 could also be tested, but some sequences don't have groundtruth provided. You also need to modify above path variables according to the sequence index you want to test
 
 ### Run sim_score_hist.py
