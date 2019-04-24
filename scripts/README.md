@@ -30,5 +30,5 @@ Plase download the Place365 dataset http://places2.csail.mit.edu/download.html. 
 
 **We don't use the groundtruth/labels provided by Place365 since we use unsupervised learning here**. **pseudoDatasetgen.py** is to generate the labels for our training images and validation images, and also generate train images and validation images from raw images. The file will also generate a preprocessed image for our raw RGB images in data_256 and val_256, i.e., converting to gray scale, random
 prospective transform, resizing etc. The input of pseudoDatasetGen.py is val_256 and the folder you put all raw training images in. The output of pseudoDatasetGen.py is four folders: train, trainlabels, val and vallabels. 
-**You will use this four folders in train.py to train the model.** Set the path variables in train.py for these four folders and the path to save the .h5 model file.
+**You will use these four folders in train.py to train the model.** Set the path variables in train.py for these four folders and the path to save the .h5 model file.
 
