@@ -17,6 +17,7 @@ download model file calc_model_6Million.h5 in master branch folder *models*. And
 ### Run sim_score_hist.py
 Please download the CampusLoopDataset from https://github.com/rpng/calc/tree/master/TrainAndTest/test_data, unzip the package you will get two folders **live** and **memory**. In the same directory, create two new empty folders **livehogs** and **memoryhogs**, which are used to store descriptors computed by our model. 
 From code line 61~66 in sim_score_hist.py modify the path variables:
+* **put AcrossChannelNorm.py in the same folder of prec_recall_figure.py, this is a customized layer used by the network**
 * set variable **base** to **YOUR_PATH_for_DATASET/CampusLoopDataset/**
 * set variable **model_path** to **YOUR_PATH_for_h5modelfile/calc_model_6Million.h5**
 From code line 143~146 in sim_score_hist.py modify the path variables:
