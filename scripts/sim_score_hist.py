@@ -59,10 +59,11 @@ def predict_on_keyframe(keyframe, model, preprocess):
 
 def predict_on_CampusLoopDataset():
     # path variables
-    imgs1_path = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/live'
-    out1_path = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/livehogs'
-    imgs2_path = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/memory'
-    out2_path = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/memoryhogs'
+    base = 'YOUR_PATH_TO_CAMPUSLOOPDATASET/CampusLoopDataset/'
+    imgs1_path = base + 'live'
+    out1_path = base + 'livehogs'
+    imgs2_path = base + 'memory'
+    out2_path = base+ 'memoryhogs'
     model_path = 'YOUR_PATH_TO_MODEL_FILES/calc_model_6Million.h5'
     preprocess = True
     
